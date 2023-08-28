@@ -1,0 +1,72 @@
+<Installation>
+Requirements
+To install Echo Go 1.13 or higher is required. Go 1.12 has limited support and some middlewares will not be available. Make sure your project folder is outside your $GOPATH.
+// GOPATH = a variable that defines the root of your workspace
+
+$ mkdir myapp && cd myapp              // make your directory
+$ go mod init myapp                    // install "go module"
+$ go get github.com/labstack/echo/v4   // download echo
+
+(short-cut var)
+If you are working with Go v1.14 or earlier use:
+
+$ GO111MODULE=on go get github.com/labstack/echo/v4
+
+
+
+<Hello, World!>
+it is the method for creating server.go
+
+package main
+
+import (
+    "net/http"
+    
+    "github.com/labstack/echo/v4"
+)
+
+func main() {
+    e := echo.New()
+    e.GET("/", func(c echo.Context) error {
+        return c.String(http.StatusOK, "Hello, World!")
+    })
+    e.Logger.Fatal(e.Start(":1323"))
+}
+
+// When you run on a local development environment(LDE), you have to run "go get "http address" on your terminal or command prompt.
+
+
+
+<Routing>
+it typically refers to the process of defining how incoming HTTP requests should be hadled by your web application.
+it determines which code should execute based on the URL or path of the incoming request.
+
+you can use below:
+e.POST("/users", saveUser)
+e.GET("/users/:id", getUser)
+e.PUT("/users/:id", updateUser)
+e.DELETE("/users/:id", deleteUser)
+
+(how to use)
+package main
+
+import (
+    "net/http"
+
+    "github.com/labstack/echo/v4"
+)
+
+func main() {
+    e := echo.New()
+
+    e.GET("/", func(c echo.Context) error {
+        return c.String(http.StatusOK, "Hello, World!")
+    })
+
+    e.GET("/users/:id", func(c echo.Context) error {
+        userID := c.Param("id")
+        return c.String(http.StatusOK, "User ID: "+userID)
+    })
+
+    e.Start(":8080")
+}
