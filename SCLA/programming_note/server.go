@@ -13,10 +13,11 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	e.POST("/users/:id", func(c echo.Context) error {
-		userID := c.Param("id")
-		return c.String(http.StatusOK, "User ID: "+userID)
-	})
+func EatAll(e Eater) {
+	e.PutIn()
+	e.Chew()
+	e.Swallow()
+}
 
 	e.Start(":8080")
 }
