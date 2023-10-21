@@ -1,20 +1,20 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/gocolly/colly"
+	"encoding/csv"
+	"log"
+	"os"
 )
 
 func main() {
-	c := colly.NewCollector(
-		colly.AllowedDomains("en.wikipedia.org"),
-	)
+	fName := "data.csv"
+	file, err := os.Create(fName)
+	if err != nil {
+		log.Fatalf("Could not create file, err: %q", err)
+		return
+	}
+	defer file.Close()
 
-	// Find and print all links
-	c.OnHTML(".mw-parser-output", func(e *colly.HTMLElement) {
-		links := e.ChildAttrs("a", "href")
-		fmt.Println(links)
-	})
-	c.Visit("https://en.wikipedia.org/wiki/Web_scraping")
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
 }
